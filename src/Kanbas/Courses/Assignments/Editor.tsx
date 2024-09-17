@@ -24,6 +24,7 @@ export default function Editor() {
                         </select>
                     </td>
                     <td>
+                        
                         Online Entry Options <br />
                         <input id="wd-points" type="checkbox" name="Text Entry" />
                         <input id="wd-points" type="checkbox" name="Text Entry" />
