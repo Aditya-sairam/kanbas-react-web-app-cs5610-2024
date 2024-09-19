@@ -8,6 +8,7 @@ export default function App(){
   return(
     <HashRouter>
     <div>
+
       <Routes>
         <Route path="/" element={<TOC  />} />
       <Route path="/Labs/*" element={<Labs />} />

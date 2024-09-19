@@ -3,6 +3,7 @@ import Account from "./Account";
 import Dashboard from "./Dashboard/Dashboard";
 import KanbasNavigation from "./Navigation";
 import Courses from "./Courses";
+import { Link } from "react-router-dom";
 
 export default function Kanbas () {
     return (
@@ -24,6 +25,8 @@ export default function Kanbas () {
             </td>
             </tr>
             </table>
+           
+            <Link to="/" id="wd-account-link" >Back to landing page</Link><br/>
         </div>
     );
 }
