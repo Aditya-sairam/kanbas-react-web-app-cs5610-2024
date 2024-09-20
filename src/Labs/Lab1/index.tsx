@@ -230,6 +230,8 @@ function Lab1() {
                 Please
                 <a id="wd-lipsum" href="https://www.lipsum.com"> &nbsp;click here</a>
                 &nbsp;to get dummy text<br />
+                <a id="wd-github" href="https://github.com/Aditya-sairam/kanbas-react-web-app-cs5610-2024/tree/a1"> &nbsp;click here</a>
+                &nbsp;to navigate to github<br />
 
 
             </div>
