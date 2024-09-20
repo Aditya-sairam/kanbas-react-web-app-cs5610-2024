@@ -39,15 +39,13 @@ function Lab1() {
                     <li>Serve and enjoy!</li>
 
                 </ol>
-                My Favorite Recipe: Pancakes
+                My Favorite Recipe: Sanwhich
                 <ol id="wd=your-favorite-recipe">
-                    <li>Mix dry ingredients.</li>
-                    <li>Add wet ingredients.</li>
-                    <li>Stir to combine.</li>
-                    <li>Heat a skillet or griddle.</li>
-                    <li>Pour batter onto the skillet.</li>
-                    <li>Cook until bubbly on top.</li>
-                    <li>Flip and cook the other side.</li>
+                    <li>Take two slices of bread</li>
+                    <li>Place the slices in toaster</li>
+                    <li>Once toasted, take a slice and spread jam on one side</li>
+                    <li>Take the other slice, spread butter using a butter knife</li>
+                    <li>Place one on top of the other</li>
                     <li>Serve and enjoy!</li>
                 </ol>
 
