@@ -1,0 +1,9 @@
+const ConditionalOutputInline = () => {
+    const loggedIn = false;
+    return (
+      <div id="wd-conditional-output-inline">
+       {loggedIn && <h2>Welcome back user1</h2>}
+       {!loggedIn && <h2> Please login inline</h2>}
+      </div>
+   );};
+   export default ConditionalOutputInline;
