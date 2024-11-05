@@ -9,10 +9,12 @@ import AssignmentEditor from "./Assignments/Editor";
 import { FaAlignJustify } from "react-icons/fa";
 import PeopleTable from "./People/Table";
 import { courses } from "../Database";
+import NewAssignmentEditor from "./Assignments/NewAssignmentEditor";
+import EnrollCourses from "./EnrollCourses";
 
 
 
-export default function Courses() {
+export default function Courses({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
     const { pathname } = useLocation();
@@ -36,6 +38,8 @@ export default function Courses() {
                         <Route path="Modules" element={<Modules />} />
                         <Route path="Assignments" element={<Assignments />} />
                         <Route path="Assignments/:aid" element={<AssignmentEditor />} />
+                        <Route path="/Kanbas/Courses/:cid/Assignments/new" element={<AssignmentEditor />} />
+                        <Route path="Kanbas/Dashboard/EnrollCourse" element={<EnrollCourses />} />
                         <Route path="People" element={<PeopleTable />} />
                     </Routes>
                 </div>
