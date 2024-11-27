@@ -4,16 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addAssignment, updateAssignment } from '../Assignments/reducer';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as assignmetClient from "./client";
+import * as coursesClient from "../client";
 
 const AssignmentEditor = () => {
     const dispatch = useDispatch();
-    // const navigate = useNavigate();
     const { cid, aid } = useParams();
     const navigate = useNavigate();
 
-    // Fetch all assignments
     const assignments = useSelector((state:any) => state.assignmentReducer.assignments || []);
-    const existingAssignment = assignments.find((assignment: { _id: string | undefined; }) => assignment._id === aid);
+    const existingAssignment = assignments.find((assignment:any) => assignment._id === aid);
 
     // Initialize state for the form fields
     const [title, setTitle] = useState('');
@@ -23,6 +22,20 @@ const AssignmentEditor = () => {
     const [availableFrom, setAvailableFrom] = useState('');
     const [availableUntil, setAvailableUntil] = useState('');
 
+    const createAssignmentForCourse = async() => {
+        if(!cid) return;
+        const newAssignment = {title:title,description:description,points:points,dueDate:dueDate,availableFrom:availableFrom,availableUntil:availableUntil}
+        const assignment = await coursesClient.createAssignmentForCourse(cid,newAssignment);
+        dispatch(addAssignment(assignment));
+    }
+
+    const updateAssignmentForCourse = async(assignment:any) => {
+        if(!cid) return;
+        // const newAssignment = {title:title,description:description,points:points,dueDate:dueDate,availableFrom:availableFrom,availableUntil:availableUntil}
+        await assignmetClient.updateAssignment(assignment);
+        dispatch(updateAssignment(assignment));
+    }
+    // Populate local state when editing an existing assignment
     useEffect(() => {
         if (existingAssignment) {
             setTitle(existingAssignment.title);
@@ -31,35 +44,39 @@ const AssignmentEditor = () => {
             setDueDate(existingAssignment.dueDate);
             setAvailableFrom(existingAssignment.availableFrom);
             setAvailableUntil(existingAssignment.availableUntil);
+        } else {
+            // Clear state for new assignment creation
+            setTitle('');
+            setDescription('');
+            setPoints('');
+            setDueDate('');
+            setAvailableFrom('');
+            setAvailableUntil('');
         }
     }, [existingAssignment]);
 
     const handleSave = () => {
         const newAssignment = {
-            _id: existingAssignment ? existingAssignment._id : `A${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+            _id: existingAssignment
+                ? existingAssignment._id
+                : `A${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
             title,
             description,
             points: parseInt(points, 10),
             dueDate,
             availableFrom,
             availableUntil,
-            course: cid
+            course: cid,
         };
 
         if (existingAssignment) {
-            dispatch(updateAssignment(newAssignment));
+            updateAssignmentForCourse(newAssignment)
         } else {
-            dispatch(addAssignment(newAssignment));
+            createAssignmentForCourse();
         }
 
         navigate(`/Kanbas/Courses/${cid}/Assignments`);
     };
-    const handleUpdateAssignment = async () => {
-        const status = await assignmetClient.updateAssignment(existingAssignment);
-        dispatch(updateAssignment(existingAssignment));
-        console.log(existingAssignment)
-        navigate(`/Kanbas/Courses/${cid}/Assignments`);
-      };
 
     const handleCancel = () => {
         navigate(`/Kanbas/Courses/${cid}/Assignments`);
@@ -76,9 +93,8 @@ const AssignmentEditor = () => {
                             id="title"
                             className="form-control"
                             type="text"
-                            
-                            onChange={(e) => dispatch(updateAssignment({ ...existingAssignment, title: e.target.value }))}
                             value={title}
+                            onChange={(e) => setTitle(e.target.value)} // Update local state
                             required
                         />
                     </div>
@@ -90,9 +106,8 @@ const AssignmentEditor = () => {
                         <textarea
                             id="description"
                             className="form-control"
-                            
                             value={description}
-                            onChange={(e) => dispatch(updateAssignment({ ...existingAssignment, description: e.target.value }))}
+                            onChange={(e) => setDescription(e.target.value)} // Update local state
                             required
                         />
                     </div>
@@ -106,7 +121,7 @@ const AssignmentEditor = () => {
                             className="form-control"
                             type="number"
                             value={points}
-                            onChange={(e) => dispatch(updateAssignment({ ...existingAssignment, points: e.target.value }))}
+                            onChange={(e) => setPoints(e.target.value)} // Update local state
                             required
                         />
                     </div>
@@ -120,7 +135,7 @@ const AssignmentEditor = () => {
                             className="form-control"
                             type="date"
                             value={dueDate}
-                            onChange={(e) => dispatch(updateAssignment({ ...existingAssignment, dueDate: e.target.value }))}
+                            onChange={(e) => setDueDate(e.target.value)} // Update local state
                             required
                         />
                     </div>
@@ -134,7 +149,7 @@ const AssignmentEditor = () => {
                             className="form-control"
                             type="date"
                             value={availableFrom}
-                            onChange={(e) => dispatch(updateAssignment({ ...existingAssignment, availableFrom: e.target.value }))}
+                            onChange={(e) => setAvailableFrom(e.target.value)} // Update local state
                             required
                         />
                     </div>
@@ -148,19 +163,19 @@ const AssignmentEditor = () => {
                             className="form-control"
                             type="date"
                             value={availableUntil}
-                            onChange={(e) => dispatch(updateAssignment({ ...existingAssignment, availableUntil: e.target.value }))}
+                            onChange={(e) => setAvailableUntil(e.target.value)} // Update local state
                             required
                         />
                     </div>
                 </div>
 
                 <div className="d-flex justify-content-between">
-                    <button type="button" className="btn btn-secondary" onClick={handleCancel}>Cancel</button>
-                    <button
-              onClick={handleUpdateAssignment}
-              className="btn btn-danger"
-              style={{ marginRight: "5px" }}
-            >Save</button>
+                    <button type="button" className="btn btn-secondary" onClick={handleCancel}>
+                        Cancel
+                    </button>
+                    <button type="button" className="btn btn-primary" onClick={handleSave}>
+                        Save
+                    </button>
                 </div>
             </form>
         </div>

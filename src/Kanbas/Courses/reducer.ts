@@ -16,7 +16,7 @@ const enrollmentSlice = createSlice({
     enrollCourse: (state, { payload: { courseId, userId } }) => {
       // Create new enrollment object with expected structure
       const newEnrollment = {
-        _id: `${userId}-${courseId}`, // Generate a unique _id
+        _id: Date.now().toString(), // Generate a unique _id
         user: userId,   // Current user's ID
         course: courseId, // The course ID from payload
       };

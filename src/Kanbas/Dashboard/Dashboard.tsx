@@ -21,14 +21,14 @@ export default function Dashboard({
   const navigate = useNavigate(); // Initialize the navigate hook
 
   const handleEnrollClick = () => {
-    navigate("/enroll-courses"); // Navigate to the EnrollCourses page
+    navigate("/enroll-courses");
   };
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1>
       <hr />
 
-      {/* Add the button for Enroll in New Courses in the top-right corner */}
+      
       {currentUser.role === "STUDENT" && (
         <div style={{ position: "absolute", top: "20px", right: "20px", zIndex: 10 }}>
           
