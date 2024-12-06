@@ -11,6 +11,9 @@ import PeopleTable from "./People/Table";
 import { courses } from "../Database";
 import NewAssignmentEditor from "./Assignments/NewAssignmentEditor";
 import EnrollCourses from "./EnrollCourses";
+import { useEffect, useState } from "react";
+import * as client from "./client";
+import * as userClient from "../Account/client";
 
 
 
@@ -18,8 +21,26 @@ import EnrollCourses from "./EnrollCourses";
 export default function Courses({ courses }: { courses: any[]; }) {
     const { cid } = useParams();
     const course = courses.find((course) => course._id === cid);
+    const [users, setUsers] = useState<any[]>([]); 
     const { pathname } = useLocation();
-
+    const fetchUsers = async () => {
+        if(!cid){
+            return;
+        }
+        const userIds = await client.findUsersForCourse(cid);
+        for (let i = 0; i < userIds.length; i++){
+            const user = await userClient.findUserById(userIds[i]);
+            users.push(user);
+        }
+        setUsers(users);
+        console.log("From index of courses!")
+        console.log(users);
+        
+        setUsers(users);
+      };
+      useEffect(() => {
+        fetchUsers();
+      }, [cid]);
     return (
         <div id="wd-courses">
             <h2 className="text-danger">
@@ -41,7 +62,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
                         <Route path="Assignments/:aid" element={<AssignmentEditor />} />
                         <Route path="/Kanbas/Courses/:cid/Assignments/new" element={<AssignmentEditor />} />
                         <Route path="Kanbas/Dashboard/EnrollCourse" element={<EnrollCourses />} />
-                        <Route path="People" element={<PeopleTable />} />
+                        <Route path="People" element={<PeopleTable users={users} />} />
                     </Routes>
                 </div>
             </div>

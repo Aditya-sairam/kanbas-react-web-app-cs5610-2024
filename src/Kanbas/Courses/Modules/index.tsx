@@ -26,6 +26,7 @@ export default function Modules() {
     dispatch(deleteModule(moduleId));
   };
   const saveModule = async (module: any) => {
+    console.log(module)
     await modulesClient.updateModule(module);
     dispatch(updateModule(module));
   };
@@ -70,9 +71,7 @@ export default function Modules() {
                 )}
 
                 <FacultyAccess><ModuleControlButtons moduleId={module._id}
-                  deleteModule={(moduleId) => {
-                    dispatch(deleteModule(moduleId));
-                  }}
+                  deleteModule={removeModule}
                   editModule={(moduleId) => dispatch(editModule(moduleId))} /></FacultyAccess>
 
               </div>

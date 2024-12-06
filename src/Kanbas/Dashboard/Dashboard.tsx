@@ -8,6 +8,9 @@ export default function Dashboard({
   addNewCourse,
   deleteCourse,
   updateCourse,
+  updateEnrollment ,
+  enrolling, 
+  setEnrolling
 }: {
   courses: any[];
   course: any;
@@ -15,9 +18,11 @@ export default function Dashboard({
   addNewCourse: () => void;
   deleteCourse: (course: any) => void;
   updateCourse: () => void;
+  enrolling: boolean; setEnrolling: (enrolling: boolean) => void;
+  updateEnrollment: (courseId: string, enrolled: boolean) => void 
 }) {
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-
+  console.log(courses)
   const navigate = useNavigate(); // Initialize the navigate hook
 
   const handleEnrollClick = () => {
@@ -27,7 +32,9 @@ export default function Dashboard({
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1>
       <hr />
-
+      <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+          {enrolling ? "My Courses" : "All Courses"}
+        </button>
       
       {currentUser.role === "STUDENT" && (
         <div style={{ position: "absolute", top: "20px", right: "20px", zIndex: 10 }}>
@@ -54,6 +61,14 @@ export default function Dashboard({
           <button className="btn btn-warning float-end me-2" onClick={updateCourse} id="wd-update-course-click">
             Update
           </button>
+          {enrolling && (
+              <button onClick={(event) => {
+                event.preventDefault();
+                updateEnrollment(course._id, !course.enrolled);
+              }} className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
+                {course.enrolled ? "Unenroll" : "Enroll"}
+              </button>
+            )}
 
           <input
             defaultValue={course.name}
